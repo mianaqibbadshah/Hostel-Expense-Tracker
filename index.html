@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mian Aqib Badshah Hotel Expensive</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <section id="loginScreen" class="login-screen">
+    <div class="login-card">
+      <div class="logo login-logo"><span>MAB</span></div>
+      <h2>Mian Aqib Badshah</h2>
+      <p>Hotel Expense Manager</p>
+      <form id="loginForm" class="login-form">
+        <input type="text" id="loginUser" placeholder="Admin/User Name" autocomplete="username" required>
+        <input type="password" id="loginPass" placeholder="Password" autocomplete="current-password" required>
+        <button type="submit">Login</button>
+        <small id="loginMsg"></small>
+      </form>
+    </div>
+  </section>
+  <div class="loader" id="loader"><div class="loader-logo">MAB</div><span>Loading your hotel expense system...</span></div>
+
+  <header class="topbar">
+    <div class="brand-wrap">
+      <div class="brand">
+        <div class="logo"><span>MAB</span></div>
+        <div>
+          <p class="eyebrow">Premium Hotel Expense Manager</p>
+          <h1>Mian Aqib Badshah Hotel Expensive</h1>
+          <p>Hotel Expensive, Room Rent and other Expensive.</p>
+        </div>
+      </div>
+      <div class="top-actions"><button class="order-btn" onclick="showPage('food')">+ Add Expense</button><button class="logout-btn" onclick="logoutUser()">Logout</button></div>
+    </div>
+    <nav>
+      <button class="tab active" data-page="dashboard">All Details</button>
+      <button class="tab" data-page="ai">AI Dashboard</button>
+      <button class="tab" data-page="food">Food Expensive</button>
+      <button class="tab" data-page="rent">Monthly Room Rent</button>
+      <button class="tab" data-page="other">Other Expensive</button>
+      <button class="tab admin-only" data-page="admin">Admin Panel</button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero animated-card">
+      <div>
+        <p class="eyebrow dark">Smart Record • Auto Total • Permanent Saving</p>
+        <h2>Track food, room rent and other hotel expenses like a professional dashboard.</h2>
+        <p>Your data is saved automatically in this browser. Use backup regularly for extra safety.</p>
+        <div class="hero-actions">
+          <button onclick="savePDF()">Save PDF</button>
+          <button onclick="exportPNG()">Download PNG</button>
+          <button onclick="exportJPG()">Download JPG</button>
+        </div>
+      </div>
+      <div class="hero-badge">
+        <span>Total</span>
+        <strong id="heroGrandTotal">0</strong>
+        <small>PKR</small>
+      </div>
+    </section>
+
+    <section class="toolbar no-export">
+      <button onclick="savePDF()">Save PDF</button>
+      <button onclick="exportPNG()">Export PNG</button>
+      <button onclick="exportJPG()">Export JPG</button>
+      <button onclick="exportText()">Export Text</button>
+      <button onclick="exportWord()">Export Word</button>
+      <button onclick="exportJSON()">Backup Data</button>
+      <label class="import">Restore Data <input type="file" accept="application/json" onchange="importJSON(event)"></label>
+      <button class="danger" onclick="clearAll()">Clear All</button>
+    </section>
+
+    <div id="exportArea">
+      <section id="dashboard" class="page show">
+        <div class="cards">
+          <div class="card food-card"><span>Food Total</span><strong id="foodTotalCard">0</strong><small>Calculated from Price field only</small></div>
+          <div class="card rent-card"><span>Room Rent Total</span><strong id="rentTotalCard">0</strong><small>Monthly rent records</small></div>
+          <div class="card other-card"><span>Other Total</span><strong id="otherTotalCard">0</strong><small>Extra hotel expenses</small></div>
+          <div class="card grand"><span>Grand Total</span><strong id="grandTotalCard">0</strong><small>All expenses together</small></div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><h2>All Details Summary</h2><span class="pill">Live Report</span></div>
+          <div id="summaryTables"></div>
+        </div>
+      </section>
+
+
+
+      <section id="ai" class="page">
+        <div class="ai-hero panel">
+          <div>
+            <p class="eyebrow">AI Budget Control Center</p>
+            <h2>Real-time expense dashboard</h2>
+            <p>Set your monthly budget and the system will automatically compare your spending, show remaining amount, and warn you when expenses are high.</p>
+          </div>
+          <div class="budget-box">
+            <div class="budget-title-row">
+              <span class="budget-icon">₨</span>
+              <div>
+                <label>Set Your Budget Amount</label>
+                <small>Enter your limit, then press Save Budget.</small>
+              </div>
+            </div>
+            <div class="budget-input-row big-budget-row">
+              <input type="number" id="budgetAmount" placeholder="Type amount here, e.g. 50000" min="0" step="0.01">
+              <button type="button" onclick="saveBudget()">Save Budget</button>
+            </div>
+            <div class="budget-quick-row">
+              <button type="button" onclick="setQuickBudget(10000)">10,000</button>
+              <button type="button" onclick="setQuickBudget(25000)">25,000</button>
+              <button type="button" onclick="setQuickBudget(50000)">50,000</button>
+              <button type="button" onclick="setQuickBudget(100000)">100,000</button>
+            </div>
+            <div class="saved-budget-note">Current saved budget: <strong id="currentBudgetText">PKR 0</strong></div>
+          </div>
+        </div>
+
+        <div class="cards ai-cards">
+          <div class="card grand"><span>Total Expense</span><strong id="aiTotalSpent">0</strong><small>All records live total</small></div>
+          <div class="card rent-card"><span>Budget</span><strong id="aiBudget">0</strong><small>Monthly spending limit</small></div>
+          <div class="card food-card"><span>Remaining</span><strong id="aiRemaining">0</strong><small>Budget minus expense</small></div>
+          <div class="card other-card"><span>Used</span><strong id="aiUsedPercent">0%</strong><small>Budget consumption</small></div>
+        </div>
+
+        <div class="ai-meter panel">
+          <div class="panel-head"><h2>Budget Measure</h2><span id="budgetStatus" class="pill">Safe</span></div>
+          <div class="meter-track"><div id="budgetFill" class="meter-fill"></div></div>
+          <p id="aiAdvice" class="ai-advice">Add a budget to get AI comparison.</p>
+        </div>
+
+        <div class="charts-grid">
+          <div class="panel chart-panel">
+            <div class="panel-head"><h2>Expense Category Chart</h2><span class="pill red">Live</span></div>
+            <canvas id="categoryChart" height="230"></canvas>
+          </div>
+          <div class="panel chart-panel">
+            <div class="panel-head"><h2>Budget vs Expense</h2><span class="pill yellow">Compare</span></div>
+            <canvas id="budgetChart" height="230"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <section id="food" class="page">
+        <div class="panel">
+          <div class="panel-head"><h2>Food Expensive</h2><span class="pill red">Food Record</span></div>
+          <form id="foodForm" class="grid-form food-form">
+            <input type="date" id="foodDate" required>
+            <input type="text" id="foodDesc" placeholder="Description" required>
+            <input type="number" id="breakfast" placeholder="Breakfast" min="0" step="0.01">
+            <input type="number" id="lunch" placeholder="Lunch" min="0" step="0.01">
+            <input type="number" id="dinner" placeholder="Dinner" min="0" step="0.01">
+            <input type="number" id="foodPrice" placeholder="Price / Amount for total" min="0" step="0.01" required>
+            <button id="foodSubmitBtn">Add Food</button>
+            <button type="button" id="foodCancelEdit" class="secondary-btn" onclick="cancelFoodEdit()" style="display:none">Cancel Edit</button>
+          </form>
+          <div id="foodTable"></div>
+        </div>
+      </section>
+
+      <section id="rent" class="page">
+        <div class="panel">
+          <div class="panel-head"><h2>Monthly Room Rent</h2><span class="pill yellow">Rent Record</span></div>
+          <form id="rentForm" class="grid-form three">
+            <input type="month" id="rentMonth" required>
+            <input type="text" id="rentDesc" placeholder="Description / Room Detail" required>
+            <input type="number" id="rentPrice" placeholder="Price" min="0" step="0.01" required>
+            <button id="rentSubmitBtn">Add Rent</button>
+            <button type="button" id="rentCancelEdit" class="secondary-btn" onclick="cancelRentEdit()" style="display:none">Cancel Edit</button>
+          </form>
+          <div id="rentTable"></div>
+        </div>
+      </section>
+
+
+
+      <section id="admin" class="page">
+        <div class="panel admin-panel">
+          <div class="panel-head"><h2>Admin Panel</h2><span class="pill red">User Progress</span></div>
+          <div class="admin-grid">
+            <div class="admin-box">
+              <h3>Create User</h3>
+              <form id="createUserForm" class="grid-form admin-user-form">
+                <input type="text" id="newUsername" placeholder="Admin/User Name" required>
+                <input type="password" id="newPassword" placeholder="Password" required>
+                <button type="submit">Create User</button>
+              </form>
+              <p id="createUserMsg" class="admin-msg"></p>
+            </div>
+            <div class="admin-box">
+              <h3>Admin Tools</h3>
+              <button onclick="downloadAdminUsers()">Download Users List</button>
+              <button class="danger" onclick="resetSelectedUser()">Reset Selected User Data</button>
+              <p class="admin-note">Admin can view totals, record count, budget use, and last login for all created users.</p>
+            </div>
+          </div>
+          <div id="adminProgressTable"></div>
+        </div>
+      </section>
+
+      <section id="other" class="page">
+        <div class="panel">
+          <div class="panel-head"><h2>Other Expensive</h2><span class="pill black">Other Record</span></div>
+          <form id="otherForm" class="grid-form three">
+            <input type="date" id="otherDate">
+            <input type="text" id="otherDesc" placeholder="Description" required>
+            <input type="number" id="otherPrice" placeholder="Price" min="0" step="0.01" required>
+            <button id="otherSubmitBtn">Add Other</button>
+            <button type="button" id="otherCancelEdit" class="secondary-btn" onclick="cancelOtherEdit()" style="display:none">Cancel Edit</button>
+          </form>
+          <div id="otherTable"></div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>Made for Mian Aqib Badshah • Data saves automatically in your browser local storage.</footer>
+  <script src="script.js"></script>
+</body>
+</html>
